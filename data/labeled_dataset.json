@@ -1,0 +1,314 @@
+[
+  {
+    "id": "F-001",
+    "category": "Factual",
+    "query": "What is the notice period for terminating the NDA?",
+    "expected_answer_contains": ["30 days", "written notice"],
+    "expected_citations": ["nda_acme_vendor"],
+    "expected_sections": ["3"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Either party may terminate the NDA with 30 days written notice. [NDA §3]"
+  },
+  {
+    "id": "F-002",
+    "category": "Factual",
+    "query": "What is the uptime commitment in the SLA?",
+    "expected_answer_contains": ["99.5%", "monthly"],
+    "expected_citations": ["service_level_agreement"],
+    "expected_sections": ["1"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Vendor shall ensure 99.5% monthly uptime. [SLA §1]"
+  },
+  {
+    "id": "F-003",
+    "category": "Factual",
+    "query": "Which law governs the Vendor Services Agreement?",
+    "expected_answer_contains": ["england", "wales"],
+    "expected_citations": ["vendor_services_agreement"],
+    "expected_sections": ["6"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "The Vendor Services Agreement is governed by the laws of England and Wales. [VSA §6]"
+  },
+  {
+    "id": "F-004",
+    "category": "Factual",
+    "query": "Do confidentiality obligations survive termination of the NDA?",
+    "expected_answer_contains": ["five", "5 years", "survive"],
+    "expected_citations": ["nda_acme_vendor"],
+    "expected_sections": ["3"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Yes, confidentiality obligations survive termination for five (5) years. [NDA §3]"
+  },
+  {
+    "id": "F-005",
+    "category": "Factual",
+    "query": "What is the data breach notification deadline in the DPA?",
+    "expected_answer_contains": ["72 hours"],
+    "expected_citations": ["data_processing_agreement"],
+    "expected_sections": ["3"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Processor must notify Controller within 72 hours of becoming aware of a breach. [DPA §3]"
+  },
+  {
+    "id": "F-006",
+    "category": "Factual",
+    "query": "What are the termination conditions in the Vendor Services Agreement?",
+    "expected_answer_contains": ["60 days", "material breach", "15 days"],
+    "expected_citations": ["vendor_services_agreement"],
+    "expected_sections": ["5"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Either party may terminate for convenience with 60 days notice, or immediately for material breach not cured within 15 days. [VSA §5]"
+  },
+  {
+    "id": "F-007",
+    "category": "Factual",
+    "query": "What remedies are available if the SLA uptime is not met?",
+    "expected_answer_contains": ["service credits", "sole", "exclusive remedy"],
+    "expected_citations": ["service_level_agreement"],
+    "expected_sections": ["2"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Service credits as defined in Schedule B. Service credits are the sole and exclusive remedy. [SLA §2]"
+  },
+  {
+    "id": "F-008",
+    "category": "Factual",
+    "query": "Which law governs the NDA?",
+    "expected_answer_contains": ["california"],
+    "expected_citations": ["nda_acme_vendor"],
+    "expected_sections": ["5"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "The NDA is governed by the laws of the State of California, USA. [NDA §5]"
+  },
+  {
+    "id": "F-009",
+    "category": "Factual",
+    "query": "Can Vendor XYZ engage subprocessors under the DPA?",
+    "expected_answer_contains": ["prior written authorization", "subprocessor"],
+    "expected_citations": ["data_processing_agreement"],
+    "expected_sections": ["4"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Yes, Processor may engage subprocessors with prior written authorization from Controller. [DPA §4]"
+  },
+  {
+    "id": "F-010",
+    "category": "Factual",
+    "query": "What is Vendor XYZ's indemnification obligation?",
+    "expected_answer_contains": ["indemnify", "third-party", "intellectual property", "negligence"],
+    "expected_citations": ["vendor_services_agreement"],
+    "expected_sections": ["3"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Vendor shall indemnify Acme Corp from third-party claims arising from IP infringement or Vendor's negligence or willful misconduct. [VSA §3]"
+  },
+
+  {
+    "id": "R-001",
+    "category": "Risk",
+    "query": "Is liability capped for breach of confidentiality?",
+    "expected_answer_contains": ["no explicit", "unlimited", "not specified"],
+    "expected_citations": ["nda_acme_vendor"],
+    "expected_sections": ["4"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] No explicit liability cap in the NDA — Vendor XYZ faces unlimited liability for breach of confidentiality. [NDA §4]"
+  },
+  {
+    "id": "R-002",
+    "category": "Risk",
+    "query": "Are there conflicting governing laws across agreements?",
+    "expected_answer_contains": ["california", "england", "wales", "gdpr", "conflict"],
+    "expected_citations": ["nda_acme_vendor", "vendor_services_agreement", "data_processing_agreement"],
+    "expected_sections": ["5", "6"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] Conflicting governing laws: NDA = California, VSA = England and Wales, DPA = GDPR. Disputes may involve multi-jurisdiction complexity."
+  },
+  {
+    "id": "R-003",
+    "category": "Risk",
+    "query": "What happens if Vendor delays breach notification beyond 72 hours?",
+    "expected_answer_contains": ["72 hours", "dpa", "liable", "risk"],
+    "expected_citations": ["data_processing_agreement"],
+    "expected_sections": ["3"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] DPA requires notification within 72 hours. Delay exposes Processor to GDPR regulatory penalties and potential liability to Controller. [DPA §3]"
+  },
+  {
+    "id": "R-004",
+    "category": "Risk",
+    "query": "Is there any unlimited liability in these agreements?",
+    "expected_answer_contains": ["nda", "no explicit", "unlimited"],
+    "expected_citations": ["nda_acme_vendor"],
+    "expected_sections": ["4"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] The NDA contains no liability cap, creating unlimited exposure for breach of confidentiality. The VSA caps liability at 12 months fees. [NDA §4, VSA §4]"
+  },
+  {
+    "id": "R-005",
+    "category": "Risk",
+    "query": "Can Vendor XYZ share Acme's confidential data with subcontractors?",
+    "expected_answer_contains": ["prior written", "authorization", "consent"],
+    "expected_citations": ["nda_acme_vendor", "data_processing_agreement"],
+    "expected_sections": ["2", "4"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] NDA prohibits sharing without prior written consent. DPA requires prior written authorization for subprocessors. Unauthorized sharing would breach both agreements. [NDA §2, DPA §4]"
+  },
+  {
+    "id": "R-006",
+    "category": "Risk",
+    "query": "Identify any clauses that could pose financial risk to Acme Corp.",
+    "expected_answer_contains": ["liability", "indemnif", "service credits"],
+    "expected_citations": ["vendor_services_agreement", "service_level_agreement"],
+    "expected_sections": ["3", "4", "2"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] 1. VSA §4: Liability cap at 12-month fees — may be insufficient for large losses. 2. SLA §2: Service credits are sole remedy — no right to damages. 3. NDA §4: No liability cap on confidentiality breach."
+  },
+  {
+    "id": "R-007",
+    "category": "Risk",
+    "query": "Summarize all risks for Acme Corp in one paragraph.",
+    "expected_answer_contains": ["risk", "liability", "confidential", "breach", "governing law"],
+    "expected_citations": ["nda_acme_vendor", "vendor_services_agreement", "data_processing_agreement"],
+    "expected_sections": [],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] Multi-doc risk summary covering unlimited NDA liability, conflicting governing laws, sole remedy limitation in SLA, and data breach notification risk under DPA."
+  },
+
+  {
+    "id": "C-001",
+    "category": "CrossDoc",
+    "query": "Which agreement has the strictest termination terms?",
+    "expected_answer_contains": ["nda", "vendor services", "30 days", "60 days"],
+    "expected_citations": ["nda_acme_vendor", "vendor_services_agreement"],
+    "expected_sections": ["3", "5"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "NDA: 30 days notice. VSA: 60 days for convenience, immediate for material breach. VSA has more detailed termination provisions. [NDA §3, VSA §5]"
+  },
+  {
+    "id": "C-002",
+    "category": "CrossDoc",
+    "query": "Which agreement governs data breach notification timelines?",
+    "expected_answer_contains": ["data processing", "dpa", "72 hours"],
+    "expected_citations": ["data_processing_agreement"],
+    "expected_sections": ["3"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "The DPA governs data breach notification — Processor must notify Controller within 72 hours of awareness. [DPA §3]"
+  },
+  {
+    "id": "C-003",
+    "category": "CrossDoc",
+    "query": "Does the DPA have its own liability cap?",
+    "expected_answer_contains": ["vendor services agreement", "relies on", "no independent", "not specify"],
+    "expected_citations": ["data_processing_agreement"],
+    "expected_sections": ["5"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] DPA has no independent liability cap — it relies on the Vendor Services Agreement cap. [DPA §5]"
+  },
+
+  {
+    "id": "H-001",
+    "category": "Hallucination",
+    "query": "What is the exact salary Acme Corp pays its employees?",
+    "expected_answer_contains": ["not specified", "not found", "not mentioned"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Not specified in the provided documents."
+  },
+  {
+    "id": "H-002",
+    "category": "Hallucination",
+    "query": "What is the penalty clause amount for late delivery?",
+    "expected_answer_contains": ["not specified", "not found", "not mentioned"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Not specified in the provided documents."
+  },
+  {
+    "id": "H-003",
+    "category": "Hallucination",
+    "query": "What is the data retention period in the DPA?",
+    "expected_answer_contains": ["not specified", "not found", "not mentioned"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Not specified in the provided documents."
+  },
+  {
+    "id": "H-004",
+    "category": "Hallucination",
+    "query": "Which countries is Vendor XYZ allowed to operate in?",
+    "expected_answer_contains": ["not specified", "not found", "not mentioned"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Not specified in the provided documents."
+  },
+
+  {
+    "id": "O-001",
+    "category": "OutOfScope",
+    "query": "Can you draft a better NDA for me?",
+    "expected_answer_contains": ["outside", "scope", "attorney", "not able", "cannot"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Out-of-scope: system does not draft documents."
+  },
+  {
+    "id": "O-002",
+    "category": "OutOfScope",
+    "query": "What legal strategy should Acme take against Vendor XYZ?",
+    "expected_answer_contains": ["outside", "scope", "attorney", "not able", "cannot"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Out-of-scope: system does not provide legal strategy advice."
+  },
+  {
+    "id": "O-003",
+    "category": "OutOfScope",
+    "query": "Write a threatening letter to Vendor XYZ.",
+    "expected_answer_contains": ["outside", "scope", "attorney", "not able", "cannot"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Out-of-scope: system does not generate legal correspondence."
+  },
+  {
+    "id": "O-004",
+    "category": "OutOfScope",
+    "query": "Predict whether Acme Corp will win a lawsuit against Vendor XYZ.",
+    "expected_answer_contains": ["outside", "scope", "attorney", "not able", "cannot"],
+    "expected_citations": [],
+    "expected_sections": [],
+    "expect_risk": false,
+    "expect_refusal": true,
+    "ground_truth": "Out-of-scope: system does not predict legal outcomes."
+  }
+]

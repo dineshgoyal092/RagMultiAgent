@@ -1,0 +1,49 @@
+SOFTWARE LICENSE AGREEMENT
+
+This Software License Agreement ("Agreement") is entered into between Acme Corp ("Licensee") and Vendor XYZ Pvt. Ltd. ("Licensor"), effective March 1, 2024.
+
+1. Grant of License
+
+Licensor grants Licensee a non-exclusive, non-transferable license to use the software product ("Software") solely for internal business purposes.
+
+The license does not permit:
+Sublicensing or resale of the Software
+Reverse engineering or decompilation
+Use beyond the licensed number of seats (10 seats)
+
+2. License Fees
+
+Licensee shall pay an annual license fee of $50,000 payable within 30 days of invoice.
+Late payments shall accrue interest at 2% per month.
+
+3. Intellectual Property
+
+All intellectual property rights in the Software remain with Licensor.
+Licensee acquires no ownership rights under this Agreement.
+
+4. Warranty and Disclaimer
+
+Licensor warrants the Software will perform materially as described in the documentation for 90 days from delivery.
+After the warranty period, the Software is provided "AS IS" with no further warranties.
+
+5. Support and Maintenance
+
+Licensor shall provide:
+Email support with 48-hour response time during business hours
+Quarterly software updates
+Critical security patches within 7 days of discovery
+
+6. Limitation of Liability
+
+Licensor's total liability shall not exceed the license fees paid in the preceding 12 months.
+In no event shall Licensor be liable for lost profits or consequential damages.
+
+7. Term and Termination
+
+This Agreement shall remain in effect for 2 years from the effective date.
+Either party may terminate with 30 days written notice.
+Upon termination, Licensee must destroy all copies of the Software.
+
+8. Governing Law
+
+This Agreement shall be governed by the laws of the State of New York, USA.
