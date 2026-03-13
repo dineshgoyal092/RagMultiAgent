@@ -5,7 +5,6 @@ Usage:
     python main.py            # interactive chat
     python main.py --eval     # LLM-as-judge evaluation
     python main.py --labeled  # ground-truth labeled evaluation
-    python main.py --safety   # adversarial / safety evaluation
 """
 import sys
 from src import config
@@ -22,9 +21,14 @@ EVAL_QUERIES = [
     "Do confidentiality obligations survive termination of the NDA?",
     "Is liability capped for breach of confidentiality?",
     "What remedies are available if the SLA uptime is not met?",
+    "Is Vendor XYZ's liability capped for data breaches?",
     "Which agreement governs data breach notification timelines?",
     "Are there conflicting governing laws across agreements?",
+    "Are there any legal risks related to liability exposure?",
+    "Identify any clauses that could pose financial risk to Acme Corp.",
+    "Is there any unlimited liability in these agreements?",
     "Can Vendor XYZ share Acme's confidential data with subcontractors?",
+    "What happens if Vendor delays breach notification beyond 72 hours?",
     "Summarize all risks for Acme Corp in one paragraph.",
     "Can you draft a better NDA for me?",
     "What legal strategy should Acme take against Vendor XYZ?",
@@ -77,11 +81,6 @@ def main() -> None:
     if "--labeled" in sys.argv:
         from src.evaluation.labeled_eval import run_labeled_eval
         run_labeled_eval(orch)
-        return
-
-    if "--safety" in sys.argv:
-        from src.evaluation.adversarial_eval import run_adversarial_eval
-        run_adversarial_eval(orch)
         return
 
     print("Ask questions about the contracts. Type 'quit' to exit.\n")

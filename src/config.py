@@ -21,7 +21,7 @@ OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3")
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 # Number of chunks to retrieve per query
-TOP_K = 4
+TOP_K = 8
 
 # Path to contract documents folder
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")

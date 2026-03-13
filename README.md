@@ -21,7 +21,7 @@ User Query
 ┌────────────────────┐      ┌──────────────────────────┐
 │  RetrievalAgent    │      │  AnswerAgent             │
 │  • FAISS search    │─────▶│  • Grounded generation   │
-│  • Top-4 chunks    │      │  • Citation enforcement  │
+│  • Top-8 chunks    │      │  • Citation enforcement  │
 └────────────────────┘      │  • [RISK] flag detection │
                             └──────────────────────────┘
 ```
@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 # Configure LLM
 cp .env.example .env
-# Edit .env → add OPENAI_API_KEY (or configure Ollama)
+# Edit .env → add OPENAI_API_KEY (or configure Groq / Ollama)
 ```
 
 ---
@@ -49,8 +49,11 @@ cp .env.example .env
 # Interactive mode
 python main.py
 
-# Evaluation suite
+# LLM-as-judge evaluation
 python main.py --eval
+
+# Ground-truth labeled evaluation (28 cases, 4 metrics each)
+python main.py --labeled
 ```
 
 ---
@@ -65,34 +68,54 @@ Split on numbered sections (`1.`, `2.`, etc.) matching contract structure.
 Local sentence-transformers model; no API cost, fast, strong on short passages.
 **Trade-off:** Not legal-domain fine-tuned. A model like `legal-bert` would improve precision at the cost of size.
 
-### LLM — GPT-4o-mini (or Ollama llama3)
+### LLM — GPT-4o-mini / Groq llama-3.1 / Ollama
 `temperature=0.1` for near-deterministic answers. `temperature=0` for the router classifier.
 Configured via `.env` — swap provider without code changes.
 
-### Retrieval — FAISS IndexFlatIP
-Exact cosine similarity over normalized embeddings. Correct at this corpus size (~20 chunks).
-**Trade-off:** At scale (>100k chunks), approximate methods (IVF, HNSW) would be needed.
+### Retrieval — FAISS + Cross-Encoder Re-ranking
+Two-stage pipeline:
+1. **FAISS IndexFlatIP** — fast bi-encoder recall of top-20 candidates
+2. **CrossEncoder** (`ms-marco-MiniLM-L-6-v2`) — re-scores each (query, chunk) pair together for precise ranking, returns top-8
+
+**Why two stages:** Bi-encoders embed query and chunk independently (fast, ~recall). Cross-encoders see both together (slower, ~precision). Two-stage gives the best of both.
+**Trade-off:** Cross-encoder adds latency per query. At scale (>100k chunks), approximate FAISS methods (IVF, HNSW) would also be needed for the recall stage.
 
 ### Prompt Design
 - **Router prompt:** single-word classification, `temperature=0`, `max_tokens=5` — deterministic routing.
-- **Answer prompt:** strict citation format `[DocName §Section]`, `[RISK]` convention, no legal opinions beyond documents.
+- **Answer prompt:** strict citation format `[DocName §Section]`, `[RISK]` convention, exact value quoting, full document names with abbreviations.
 
 ---
 
 ## Evaluation
 
-**What:** LLM-as-judge scoring each answer on Relevance (0–3) and Groundedness (0–3).
-**Why Relevance:** catches retrieval failures (wrong chunks returned).
-**Why Groundedness:** catches hallucination (answer not tied to document text).
-**Limitations:** no ground-truth labels; judge model can be inconsistent; small corpus limits coverage testing.
+### LLM-as-judge (`--eval`)
+Scores each answer on Relevance (0–3) and Groundedness (0–3).
+- **Relevance:** catches retrieval failures (wrong chunks returned)
+- **Groundedness:** catches hallucination (answer not tied to document text)
+
+### Labeled dataset (`--labeled`)
+28 human-labeled cases across 5 categories. 4 deterministic metrics per case:
+- **AnswerMatch** — expected keywords present in response
+- **CitationMatch** — expected source documents retrieved
+- **RiskMatch** — `[RISK]` flag present/absent as expected
+- **RefusalMatch** — system refused or answered as expected
+
+**Results: 19/28 (68%) pass rate, 0.84/1.0 avg partial score**
+
+| Category | Cases | Pass |
+|---|---|---|
+| Factual | 10 | 9 |
+| Risk | 7 | 2 |
+| CrossDoc | 3 | 1 |
+| Hallucination | 4 | 4 |
+| OutOfScope | 4 | 3 |
 
 ---
 
 ## Known Limitations
 
-- No re-ranking (cross-encoder reranking would improve precision on ambiguous queries)
 - Clause-level chunking may miss cross-section context (e.g. definitions in §1 referenced in §4)
-- Evaluation is relative, not absolute — no human-labeled gold answers
+- Broad queries (e.g. "summarize all risks") may not retrieve chunks from every document — per-document retrieval would improve coverage
 - Conversation history is capped at last 4 messages to control token usage
 
 ---
