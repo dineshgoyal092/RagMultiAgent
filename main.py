@@ -52,18 +52,25 @@ def build_system() -> OrchestratorAgent:
 
 
 def display(answer) -> None:
-    """Print the answer, sources, and any risk flags."""
+    """Print the answer and only the sources actually cited in the response."""
     print(f"\n{answer.response}")
 
     if answer.sources:
+        resp = answer.response.lower()
+        cited = []
         seen = set()
-        lines = []
         for rc in answer.sources:
-            key = f"{rc.chunk.doc_name} | {rc.chunk.section}"
-            if key not in seen:
-                lines.append(key)
-                seen.add(key)
-        print("\nSources: " + "  /  ".join(lines))
+            doc = rc.chunk.doc_name.lower()
+            # Extract leading section number, e.g. "3. Term and Termination" → "3"
+            section_num = rc.chunk.section.split(".")[0].strip()
+            # Show only if both the doc name AND its section number are cited in the response
+            if doc in resp and f"§{section_num}" in resp:
+                key = f"{rc.chunk.doc_name} | {rc.chunk.section}"
+                if key not in seen:
+                    cited.append(key)
+                    seen.add(key)
+        if cited:
+            print("\nSources: " + "  /  ".join(cited))
 
 
 def main() -> None:

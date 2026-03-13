@@ -310,5 +310,50 @@
     "expect_risk": false,
     "expect_refusal": true,
     "ground_truth": "Out-of-scope: system does not predict legal outcomes."
+  },
+
+  {
+    "id": "M-001",
+    "category": "MultiQuery",
+    "query": "What is the notice period for terminating the NDA and which law governs it?",
+    "expected_answer_contains": ["thirty", "california"],
+    "expected_citations": ["nda_acme_vendor"],
+    "expected_sections": ["3", "5"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "NDA termination requires 30 days written notice [NDA §3]. Governed by California law [NDA §5]."
+  },
+  {
+    "id": "M-002",
+    "category": "MultiQuery",
+    "query": "Is liability capped in the NDA and what happens if Vendor delays breach notification beyond 72 hours?",
+    "expected_answer_contains": ["no explicit", "72 hours"],
+    "expected_citations": ["nda_acme_vendor", "data_processing_agreement"],
+    "expected_sections": ["4", "3"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "[RISK] NDA has no explicit liability cap [NDA §4]. DPA requires notification within 72 hours — delay exposes Processor to GDPR penalties [DPA §3]."
+  },
+  {
+    "id": "M-003",
+    "category": "MultiQuery",
+    "query": "Which agreement has the strictest termination terms and are there conflicting governing laws?",
+    "expected_answer_contains": ["60 days", "california", "england"],
+    "expected_citations": ["vendor_services_agreement", "nda_acme_vendor"],
+    "expected_sections": ["5", "6"],
+    "expect_risk": true,
+    "expect_refusal": false,
+    "ground_truth": "VSA has strictest terms: 60 days notice or immediate for material breach [VSA §5]. [RISK] Conflicting governing laws: NDA=California, VSA=England and Wales, DPA=GDPR."
+  },
+  {
+    "id": "M-004",
+    "category": "MultiQuery",
+    "query": "What is the uptime commitment in the SLA and what remedies are available if it is not met?",
+    "expected_answer_contains": ["99.5%", "service credits", "sole"],
+    "expected_citations": ["service_level_agreement"],
+    "expected_sections": ["1", "2"],
+    "expect_risk": false,
+    "expect_refusal": false,
+    "ground_truth": "Vendor must ensure 99.5% monthly uptime [SLA §1]. Remedy is service credits as defined in Schedule B — sole and exclusive remedy [SLA §2]."
   }
 ]
